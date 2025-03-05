@@ -1,0 +1,59 @@
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static int n;
+    static StringBuilder sb = new StringBuilder();
+
+    static int union(int one, int two, int[] parent, int[] number) {
+        int y = find(one, parent);
+        int x = find(two, parent);
+        if (y < x) {
+            parent[x] = y;
+            number[y] += number[x];
+            return y;
+        } else if (y > x) {
+            parent[y] = x;
+            number[x] += number[y];
+        }
+        return x;
+    }
+
+    static int find(int one, int[] parent) {
+        if (parent[one] == one) return one;
+        return parent[one] = find(parent[one], parent);
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        int T = Integer.parseInt(br.readLine());
+
+        while (T-- > 0) {
+            int m = Integer.parseInt(br.readLine());
+            n = 0;
+            Map<String, Integer> nameIdxMap = new HashMap<>();
+            int[] parent = new int[m*2];
+            for (int i = 0; i < m*2; i++) {
+                parent[i] = i;
+            }
+            int[] number = new int[m*2];
+            Arrays.fill(number, 1);
+            while (m-- > 0) {
+                st = new StringTokenizer(br.readLine());
+                String oneName = st.nextToken();
+                String twoName = st.nextToken();
+                if (!nameIdxMap.containsKey(oneName)) nameIdxMap.put(oneName, n++);
+                if (!nameIdxMap.containsKey(twoName)) nameIdxMap.put(twoName, n++);
+                int one = nameIdxMap.get(oneName);
+                int two = nameIdxMap.get(twoName);
+                int grandParent = union(one, two, parent, number);
+                sb.append(number[grandParent]).append("\n");
+            }
+        }
+        System.out.println(sb.toString());
+    }
+}
+
