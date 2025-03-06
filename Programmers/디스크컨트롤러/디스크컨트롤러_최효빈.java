@@ -3,7 +3,7 @@ package comparator;
 import java.util.*;
 
 class Job {
-    int id;
+    int id; 
     int requestTime;
     int duration;
 
