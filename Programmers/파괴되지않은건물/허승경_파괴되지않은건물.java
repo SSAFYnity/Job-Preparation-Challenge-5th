@@ -1,49 +1,48 @@
 import java.util.*;
 
 class Solution {
-    int [][] map;
     public int solution(int[][] board, int[][] skill) {
-        map = new int[board.length][board[0].length];
-        for(int i = 0; i < board.length; i++){
-            map[i] = Arrays.copyOf(board[i], board[i].length);
+        int [][] diff = new int[board.length + 1][board[0].length + 1];
+        
+        // diff에 degree 기록
+        for(int i = 0; i < skill.length; i++){
+            int r1 = skill[i][1];
+            int c1 = skill[i][2];
+            int r2 = skill[i][3];
+            int c2 = skill[i][4];
+            int degree = skill[i][5];
+            
+            if(skill[i][0] == 1) degree = -degree;  // 공격 -> 음수
+            
+            diff[r1][c1] += degree;
+            diff[r2+1][c1] -= degree;
+            diff[r1][c2+1] -= degree;
+            diff[r2+1][c2+1] += degree;
         }
         
-        // 공격 + 회복
-        for(int i = 0; i < skill.length; i++){
-            if(skill[i][0] == 1){       // 적의 공격
-                decreaseDegree(skill[i][1], skill[i][2], skill[i][3], skill[i][4],
-                              skill[i][5]);
-            }else{      // 아군의 회복
-                increaseDegree(skill[i][1], skill[i][2], skill[i][3], skill[i][4],
-                              skill[i][5]);
+        // 누적합 -> 열방향 (오 -> 왼)
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j <  board[0].length; j++) {
+                diff[i + 1][j] += diff[i][j];
             }
         }
         
+        // 누적합 -> 행방향 (왼 -> 오)
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j <  board[0].length; j++) {
+                diff[i][j + 1] += diff[i][j];
+            }
+        }
+
+        
         // 확인
         int answer = 0;
-        for(int i = 0; i < map.length; i++){
-            for(int j = 0; j < map[i].length; j++){
-                if(map[i][j] >= 1) answer++;
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[i].length; j++){
+                board[i][j] += diff[i][j];
+                if(board[i][j] >= 1) answer++;
             }
         }
         return answer;
     }
-    
-    void decreaseDegree(int r1, int c1, int r2, int c2, int degree){
-        for(int i = r1; i <= r2; i++){
-            for(int j = c1; j <= c2; j++){
-                map[i][j] -= degree;
-            }
-        }
-    }
-    
-    void increaseDegree(int r1, int c1, int r2, int c2, int degree){
-        for(int i = r1; i <= r2; i++){
-            for(int j = c1; j <= c2; j++){
-                map[i][j] += degree;
-            }
-        }
-    }
-    
-    
 }
