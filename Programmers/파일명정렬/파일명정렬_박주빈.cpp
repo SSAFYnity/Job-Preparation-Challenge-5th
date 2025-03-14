@@ -65,7 +65,7 @@ vector<string> solution(vector<string> files)
 		v.push_back(f);
 	}
 
-	sort(v.begin(), v.end(), cmp);
+	stable_sort(v.begin(), v.end(), cmp);
 
 	for (int i = 0; i < v.size(); i++)
 	{
