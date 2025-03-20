@@ -14,13 +14,7 @@ class Solution {
         for(String str : record){
             String[] tmp = str.split(" ");
             if(tmp[0].equals("Enter")){     // 들어오기
-                if(!hmap.containsKey(tmp[1])){
-                    hmap.put(tmp[1], tmp[2]);
-                }else{
-                    if(!hmap.get(tmp[1]).equals(tmp[2])){
-                        hmap.replace(tmp[1], tmp[2]);
-                    }
-                }
+                hmap.put(tmp[1], tmp[2]);
                 que.add(new String[] {tmp[1], tmp[0]});
             }else if(tmp[0].equals("Change")){      // 이름 변경
                 hmap.replace(tmp[1], tmp[2]);
