@@ -23,10 +23,9 @@ class Solution {
     }
     
     public int[] solution(String[][] places) {
-        int[] answer = new int[5];
+        int[] answer = new int[places.length];
         
-        for(int i = 0; i < 5; i++){
-            System.out.println("단계: "+i);
+        for(int i = 0; i < places.length; i++){
             if(checkRoom(places[i])) answer[i] = 1; // 판별하러가기
             else answer[i] = 0;
         }
@@ -65,14 +64,18 @@ class Solution {
                     }else if(datumPoint.y == tmpPoint.y){   // 같은 열
                         if(!room[datumPoint.x+1][datumPoint.y].equals("X"))return false;
                     }
-                    else{  // 대각선
-                        if(datumPoint.x < tmpPoint.x){
-                            if(datumPoint.x+1 >= 5 || datumPoint.y+1 >= 5) continue;
-                            if(!room[datumPoint.x][datumPoint.y+1].equals("X") || !room[datumPoint.x+1][datumPoint.y].equals("X")) return false;
-                        }else{
-                            if(datumPoint.x+1 >= 5 || datumPoint.y+1 >= 5) continue;
-                            if(!room[datumPoint.x][datumPoint.y-1].equals("X") || !room[datumPoint.x+1][datumPoint.y].equals("X")) return false;
-                        } 
+                    else {  // 대각선
+                        if (datumPoint.x < tmpPoint.x && datumPoint.y < tmpPoint.y) {
+                            if (datumPoint.x + 1 >= 5 || datumPoint.y + 1 >= 5) continue;
+                            if (room[datumPoint.x][datumPoint.y + 1].equals("X") &&
+                                room[datumPoint.x + 1][datumPoint.y].equals("X")) continue;
+                            else return false;
+                        } else if (datumPoint.x < tmpPoint.x && datumPoint.y > tmpPoint.y){
+                            if (datumPoint.x + 1 >= 5 || datumPoint.y - 1 < 0) continue;
+                            if (room[datumPoint.x][datumPoint.y - 1].equals("X") &&
+                                room[datumPoint.x + 1][datumPoint.y].equals("X")) continue;
+                                else return false;
+                        }
                     }
                 }
             }
