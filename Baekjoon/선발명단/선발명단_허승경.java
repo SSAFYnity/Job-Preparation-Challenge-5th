@@ -39,16 +39,14 @@ public class Main {
 			return;
 		}
 		
-		for(int i = index; i < 11; i++) {
-			for(int j = 0; j < list.get(i).size(); j++) {
-				int position = list.get(i).get(j)[0];
-				int curCost = list.get(i).get(j)[1];
-				
-				if(!visited[position]) {
-					visited[position] = true;
-					backtrack(list, visited, cost+curCost, index+1);
-					visited[position] = false;
-				}
+		for(int i = 0; i < list.get(index).size(); i++) {
+			int position = list.get(index).get(i)[0];
+			int curCost = list.get(index).get(i)[1];
+			
+			if(!visited[position]) {
+				visited[position] = true;
+				backtrack(list, visited, cost+curCost, index+1);
+				visited[position] = false;
 			}
 		}
 		
